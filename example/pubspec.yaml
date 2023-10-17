@@ -16,6 +16,7 @@ dependencies:
     path: ..
   random_color: ^1.0.6-nullsafety
   easy_web_view: ^1.6.0
+  flutter_hooks: ^0.20.3
 
 dev_dependencies:
   flutter_test:

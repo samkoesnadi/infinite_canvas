@@ -1,86 +1,71 @@
 import 'dart:math';
 
+import 'package:example/hooks/infinite_canvas_controller_hook.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 import 'package:random_color/random_color.dart';
 
-class GeneratedNodes extends StatefulWidget {
-  const GeneratedNodes({super.key});
+class Aisha extends HookWidget {
+  // @override
+  // void initState() {
+  //   super.initState();
 
-  @override
-  State<GeneratedNodes> createState() => _GeneratedNodesState();
-}
+  //   // TODO: add the nodes
+  //   final nodes = <InfiniteCanvasNode>[];
 
-class _GeneratedNodesState extends State<GeneratedNodes> {
-  late InfiniteCanvasController controller;
-  final gridSize = const Size.square(50);
+  //   // final colors = RandomColor();
+  //   // final nodes = List.generate(100, (index) {
+  //   //   final color = colors.randomColor();
+  //   //   final size = Random().nextDouble() * 200 + 100;
+  //   //   return InfiniteCanvasNode(
+  //   //     key: UniqueKey(),
+  //   //     label: 'Node $index',
+  //   //     allowResize: true,
+  //   //     offset: Offset(
+  //   //       Random().nextDouble() * 5000,
+  //   //       Random().nextDouble() * 5000,
+  //   //     ),
+  //   //     size: Size.square(size),
+  //   //     child: Builder(
+  //   //       builder: (context) {
+  //   //         return CustomPaint(
+  //   //           painter: InlineCustomPainter(
+  //   //             brush: Paint()..color = color,
+  //   //             builder: (brush, canvas, rect) {
+  //   //               // Draw circle
+  //   //               final diameter = min(rect.width, rect.height);
+  //   //               final radius = diameter / 2;
+  //   //               canvas.drawCircle(rect.center, radius, brush);
+  //   //             },
+  //   //           ),
+  //   //         );
+  //   //       },
+  //   //     ),
+  //   //   );
+  //   // });
 
-  @override
-  void initState() {
-    super.initState();
+  //   // Generate random edges
+  //   final edges = <InfiniteCanvasEdge>[];
 
-    // TODO: add the nodes
-    final nodes = <InfiniteCanvasNode>[];
-
-    // final colors = RandomColor();
-    // final nodes = List.generate(100, (index) {
-    //   final color = colors.randomColor();
-    //   final size = Random().nextDouble() * 200 + 100;
-    //   return InfiniteCanvasNode(
-    //     key: UniqueKey(),
-    //     label: 'Node $index',
-    //     allowResize: true,
-    //     offset: Offset(
-    //       Random().nextDouble() * 5000,
-    //       Random().nextDouble() * 5000,
-    //     ),
-    //     size: Size.square(size),
-    //     child: Builder(
-    //       builder: (context) {
-    //         return CustomPaint(
-    //           painter: InlineCustomPainter(
-    //             brush: Paint()..color = color,
-    //             builder: (brush, canvas, rect) {
-    //               // Draw circle
-    //               final diameter = min(rect.width, rect.height);
-    //               final radius = diameter / 2;
-    //               canvas.drawCircle(rect.center, radius, brush);
-    //             },
-    //           ),
-    //         );
-    //       },
-    //     ),
-    //   );
-    // });
-
-    // Generate random edges
-    final edges = <InfiniteCanvasEdge>[];
-
-    // TODO: add the edges
-    // for (int i = 0; i < nodes.length; i++) {
-    //   final from = nodes[i];
-    //   final to = nodes[Random().nextInt(nodes.length)];
-    //   if (from != to) {
-    //     edges.add(InfiniteCanvasEdge(
-    //       from: from.key,
-    //       to: to.key,
-    //       label: 'Edge $i',
-    //     ));
-    //   }
-    // }
-
-    controller = InfiniteCanvasController(nodes: nodes, edges: edges);
-    controller.formatter = (node) {
-      // snap to grid
-      node.offset = Offset(
-        (node.offset.dx / gridSize.width).roundToDouble() * gridSize.width,
-        (node.offset.dy / gridSize.height).roundToDouble() * gridSize.height,
-      );
-    };
-  }
+  //   // TODO: add the edges
+  //   // for (int i = 0; i < nodes.length; i++) {
+  //   //   final from = nodes[i];
+  //   //   final to = nodes[Random().nextInt(nodes.length)];
+  //   //   if (from != to) {
+  //   //     edges.add(InfiniteCanvasEdge(
+  //   //       from: from.key,
+  //   //       to: to.key,
+  //   //       label: 'Edge $i',
+  //   //     ));
+  //   //   }
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final controller = useInfiniteCanvasController(nodes: [], edges: []);
+
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text('Infinite Canvas Example'),
@@ -90,7 +75,6 @@ class _GeneratedNodesState extends State<GeneratedNodes> {
         drawVisibleOnly: true,
         canAddEdges: true,
         controller: controller,
-        gridSize: gridSize,
         menus: [
           MenuEntry(
             label: 'Create',
