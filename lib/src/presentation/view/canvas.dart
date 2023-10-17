@@ -8,7 +8,6 @@ import '../../domain/model/edge.dart';
 import '../widgets/edge_renderer.dart';
 import '../state/controller.dart';
 import '../widgets/grid_background.dart';
-import '../widgets/marquee.dart';
 import '../../domain/model/menu_entry.dart';
 import '../widgets/menus.dart';
 import '../widgets/node_renderer.dart';
@@ -203,12 +202,7 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
           onPointerDown: (details) {
             controller.mouseDown = true;
             controller.checkSelection(details.localPosition);
-            if (controller.selection.isEmpty) {
-              if (!controller.spacePressed) {
-                controller.marqueeStart = details.localPosition;
-                controller.marqueeEnd = details.localPosition;
-              }
-            } else {
+            if (controller.selection.isNotEmpty) {
               if (controller.controlPressed && widget.canAddEdges) {
                 final selected = controller.selection.last;
                 controller.linkStart = selected.key;
@@ -218,10 +212,6 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
           },
           onPointerUp: (details) {
             controller.mouseDown = false;
-            if (controller.marqueeStart != null &&
-                controller.marqueeEnd != null) {
-              controller.checkMarqueeSelection();
-            }
             if (controller.linkStart != null && controller.linkEnd != null) {
               controller.checkSelection(controller.linkEnd!);
               if (controller.selection.isNotEmpty) {
@@ -229,8 +219,6 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
                 controller.addLink(controller.linkStart!, selected.key);
               }
             }
-            controller.marqueeStart = null;
-            controller.marqueeEnd = null;
             controller.linkStart = null;
             controller.linkEnd = null;
           },
@@ -242,11 +230,6 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
             controller.checkSelection(controller.mousePosition, true);
           },
           onPointerMove: (details) {
-            controller.marqueeEnd = details.localPosition;
-            if (controller.marqueeStart != null &&
-                controller.marqueeEnd != null) {
-              controller.checkMarqueeSelection(true);
-            }
             if (controller.linkStart != null) {
               controller.linkEnd = details.localPosition;
               controller.checkSelection(controller.linkEnd!, true);
@@ -266,11 +249,8 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
                 onInteractionUpdate: (details) {
                   if (!controller.mouseDown) {
                     controller.scale = details.scale;
-                  } else if (controller.spacePressed) {
-                    controller.pan(details.focalPointDelta);
-                  } else if (controller.controlPressed) {
                   } else {
-                    controller.moveSelection(details.focalPoint);
+                    controller.pan(details.focalPointDelta);
                   }
                   controller.mousePosition = details.focalPoint;
                 },
@@ -286,9 +266,10 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        Positioned.fill(
-                          child: buildBackground(context, quad),
-                        ),
+                        // CHANGE: Remove the grid background, it is pointless
+                        // Positioned.fill(
+                        //   child: buildBackground(context, quad),
+                        // ),
                         Positioned.fill(
                           child: InfiniteCanvasEdgeRenderer(
                             controller: controller,
@@ -316,16 +297,6 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
                                 .toList(),
                           ),
                         ),
-                        if (controller.marqueeStart != null &&
-                            controller.marqueeEnd != null) ...[
-                          Positioned.fill(
-                            child: Marquee(
-                              start:
-                                  controller.toLocal(controller.marqueeStart!),
-                              end: controller.toLocal(controller.marqueeEnd!),
-                            ),
-                          ),
-                        ],
                       ],
                     ),
                   );
