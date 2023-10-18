@@ -250,7 +250,11 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
                   if (!controller.mouseDown) {
                     controller.scale = details.scale;
                   } else {
-                    controller.pan(details.focalPointDelta);
+                    if (controller.selection.isEmpty) {
+                      controller.pan(details.focalPointDelta);
+                    } else {
+                      controller.moveSelection(details.focalPoint);
+                    }
                   }
                   controller.mousePosition = details.focalPoint;
                 },

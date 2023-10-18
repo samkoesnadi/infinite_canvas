@@ -182,34 +182,7 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
       }
     }
     if (selection.isNotEmpty) {
-      if (shiftPressed) {
-        setSelection({selection.last, ..._selected.toSet()}, hover);
-      } else {
-        setSelection({selection.last}, hover);
-      }
-    } else {
-      deselectAll(hover);
-    }
-  }
-
-  void checkMarqueeSelection([bool hover = false]) {
-    if (marqueeStart == null || marqueeEnd == null) return;
-    final selection = <Key>{};
-    final rect = Rect.fromPoints(
-      toLocal(marqueeStart!),
-      toLocal(marqueeEnd!),
-    );
-    for (final child in nodes) {
-      if (rect.overlaps(child.rect)) {
-        selection.add(child.key);
-      }
-    }
-    if (selection.isNotEmpty) {
-      if (shiftPressed) {
-        setSelection(selection.union(_selected.toSet()), hover);
-      } else {
-        setSelection(selection, hover);
-      }
+      setSelection({selection.last}, hover);
     } else {
       deselectAll(hover);
     }
