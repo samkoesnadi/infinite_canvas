@@ -1,31 +1,28 @@
-
 import 'package:flutter/material.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 
-// InfiniteCanvasNode generateTextBox() {
-//   return InfiniteCanvasNode(
-//         key: UniqueKey(),
-//         label: 'Node $index',
-//         allowResize: true,
-//         offset: Offset(
-//           Random().nextDouble() * 5000,
-//           Random().nextDouble() * 5000,
-//         ),
-//         size: Size.square(size),
-//         child: Builder(
-//           builder: (context) {
-//             return CustomPaint(
-//               painter: InlineCustomPainter(
-//                 brush: Paint()..color = color,
-//                 builder: (brush, canvas, rect) {
-//                   // Draw circle
-//                   final diameter = min(rect.width, rect.height);
-//                   final radius = diameter / 2;
-//                   canvas.drawCircle(rect.center, radius, brush);
-//                 },
-//               ),
-//             );
-//           },
-//         ),
-//       );
-// }
+InfiniteCanvasNode generateTextBox(
+  Offset offset,
+  Size size,
+  String labelText,
+) {
+  return InfiniteCanvasNode(
+    key: UniqueKey(),
+    allowResize: true,
+    offset: offset,
+    size: size,
+    child: Builder(
+      builder: (context) {
+        return Container(
+            child: TextField(
+          maxLines: null,
+          expands: true,
+          decoration: InputDecoration.collapsed(
+            hintText: labelText,
+            border: OutlineInputBorder(),
+          ),
+        ));
+      },
+    ),
+  );
+}
