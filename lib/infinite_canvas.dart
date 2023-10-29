@@ -7,3 +7,4 @@ export 'src/domain/model/node.dart';
 export 'src/domain/model/menu_entry.dart';
 export 'src/presentation/state/controller.dart';
 export 'src/presentation/view/canvas.dart';
+export 'src/common_theme.dart';

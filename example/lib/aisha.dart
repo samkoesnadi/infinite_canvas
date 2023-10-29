@@ -66,7 +66,15 @@ class Aisha extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = useInfiniteCanvasController(nodes: [], edges: []);
+    final node = generateTextBox(
+        controller.mousePosition,
+        Size(
+          Random().nextDouble() * 200 + 100,
+          Random().nextDouble() * 200 + 100,
+        ),
+        "labelText");
 
+    controller.add(node);
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text('Infinite Canvas Example'),
@@ -76,150 +84,7 @@ class Aisha extends HookWidget {
         drawVisibleOnly: true,
         canAddEdges: true,
         controller: controller,
-        menus: [
-          MenuEntry(
-            label: 'Create',
-            menuChildren: [
-              MenuEntry(
-                label: 'Circle',
-                onPressed: () {
-                  final color = RandomColor().randomColor();
-                  final node = generateTextBox(
-                    controller.mousePosition,
-                    Size(
-                      Random().nextDouble() * 200 + 100,
-                      Random().nextDouble() * 200 + 100,
-                    ),
-                    "labelText"
-                  );
-                  
-                  controller.add(node);
-                },
-              ),
-              MenuEntry(
-                label: 'Triangle',
-                onPressed: () {
-                  final color = RandomColor().randomColor();
-                  final node = InfiniteCanvasNode(
-                    key: UniqueKey(),
-                    label: 'Node ${controller.nodes.length}',
-                    allowResize: true,
-                    offset: controller.mousePosition,
-                    size: Size(
-                      Random().nextDouble() * 200 + 100,
-                      Random().nextDouble() * 200 + 100,
-                    ),
-                    child: Builder(
-                      builder: (context) {
-                        return CustomPaint(
-                          painter: InlineCustomPainter(
-                            brush: Paint()..color = color,
-                            builder: (brush, canvas, rect) {
-                              // Draw triangle
-                              final path = Path()
-                                ..moveTo(rect.left, rect.bottom)
-                                ..lineTo(rect.right, rect.bottom)
-                                ..lineTo(rect.center.dx, rect.top)
-                                ..close();
-                              canvas.drawPath(path, brush);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                  controller.add(node);
-                },
-              ),
-              MenuEntry(
-                label: 'Rectangle',
-                onPressed: () {
-                  final color = RandomColor().randomColor();
-                  final node = InfiniteCanvasNode(
-                    key: UniqueKey(),
-                    label: 'Node ${controller.nodes.length}',
-                    allowResize: true,
-                    offset: controller.mousePosition,
-                    size: Size(
-                      Random().nextDouble() * 200 + 100,
-                      Random().nextDouble() * 200 + 100,
-                    ),
-                    child: Builder(
-                      builder: (context) {
-                        return CustomPaint(
-                          painter: InlineCustomPainter(
-                            brush: Paint()..color = color,
-                            builder: (brush, canvas, rect) {
-                              // Draw rectangle
-                              canvas.drawRect(rect, brush);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                  controller.add(node);
-                },
-              ),
-            ],
-          ),
-          MenuEntry(
-            label: 'Info',
-            menuChildren: [
-              MenuEntry(
-                label: 'Cycle',
-                onPressed: () {
-                  final fd = controller.getDirectedGraph();
-                  final messenger = ScaffoldMessenger.of(context);
-                  final result = fd.cycle;
-                  messenger.showSnackBar(
-                    SnackBar(
-                      content: Text(
-                          'Cycle found: ${result.map((e) => e.key.toString()).join(', ')}'),
-                    ),
-                  );
-                },
-              ),
-              MenuEntry(
-                label: 'In Degree',
-                onPressed: () {
-                  final fd = controller.getDirectedGraph();
-                  final result = fd.inDegreeMap;
-                  // Show dismissible dialog
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('In Degree'),
-                        content: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              for (final entry in result.entries.toList()
-                                ..sort(
-                                  (a, b) => b.value.compareTo(a.value),
-                                ))
-                                Text(
-                                  '${entry.key.id}: ${entry.value}',
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                            ],
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Close'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
+        menus: [],
       ),
     );
   }
